@@ -1,4 +1,4 @@
-# Training material for a Master student 
+# Training material  
 
 
 ## Background Questionnaire 

@@ -1,4 +1,4 @@
-# Training material  
+# Training Dataset: scRNA-seq Analysis of Mouse Digit Tip Regeneration
 
 
 ## Background Questionnaire 

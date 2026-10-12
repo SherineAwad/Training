@@ -304,3 +304,15 @@ install.packages(c(
   "patchwork"
 ))
 
+
+
+## Training Dataset: scRNA-seq Data from 3x and 5x Amputated Mouse Digit Tips
+
+[Click here to download the data (you will need to log in with your University of Cambridge credentials)](https://drive.google.com/drive/folders/1xFSFhso0atJtTVNzQtSWkT2popfzkdIB?usp=sharing)
+
+| Sample ID | Condition |
+|---|---|
+| SITTF8 | 3x |
+| SITTC1 | 5x |
+
+

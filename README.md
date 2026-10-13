@@ -350,18 +350,18 @@ saveRDS(myObject, file = "DigitTips.rds")
 ###### You will see something like this: 
 
 ```text
- 3x      5x 
-1260648  972724 
+  3x    5x 
+25703  5230 
 Formal class 'Seurat' [package "SeuratObject"] with 13 slots
   ..@ assays      :List of 1
   .. ..$ RNA:Formal class 'Assay5' [package "SeuratObject"] with 8 slots
-  ..@ meta.data   :'data.frame':	2233372 obs. of  3 variables:
-  .. ..$ orig.ident  : chr [1:2233372] "5x" "5x" "5x" "5x" ...
-  .. ..$ nCount_RNA  : num [1:2233372] 0 1 1 1 1 1 50 0 1 1 ...
-  .. ..$ nFeature_RNA: int [1:2233372] 0 1 1 1 1 1 43 0 1 1 ...
+  ..@ meta.data   :'data.frame':	30933 obs. of  3 variables:
+  .. ..$ orig.ident  : chr [1:30933] "5x" "5x" "5x" "5x" ...
+  .. ..$ nCount_RNA  : num [1:30933] 16692 15785 18225 88472 18423 ...
+  .. ..$ nFeature_RNA: int [1:30933] 4777 3968 4547 9082 4458 4750 4848 162 4595 4558 ...
   ..@ active.assay: chr "RNA"
   ..@ active.ident: Factor w/ 1 level "DigitTips": 1 1 1 1 1 1 1 1 1 1 ...
-  .. ..- attr(*, "names")= chr [1:2233372] "5x_AAACCCAAGAAACCAT-1" "5x_AAACCCAAGAAAGCGA-1" "5x_AAACCCAAGAAATTCG-1" "5x_AAACCCAAGAACAGGA-1" ...
+  .. ..- attr(*, "names")= chr [1:30933] "5x_AAACCCACACTCCGGA-1" "5x_AAACCCAGTCCTCCAT-1" "5x_AAACCCAGTCCTTTGC-1" "5x_AAACCCAGTGTTGCCG-1" ...
   ..@ graphs      : list()
   ..@ neighbors   : list()
   ..@ reductions  : list()
@@ -373,33 +373,34 @@ Formal class 'Seurat' [package "SeuratObject"] with 13 slots
   ..@ commands    : list()
   ..@ tools       : list()
 An object of class Seurat 
-32285 features across 2233372 samples within 1 assay 
+32285 features across 30933 samples within 1 assay 
 Active assay: RNA (32285 features, 0 variable features)
  2 layers present: counts.1, counts.2
+
 ``` 
 
 
 ###### Key points in the output
 
-- **Sample cell counts:**
-  - `3x`: 1,260,648 cells
-  - `5x`: 972,724 cells
-  - Total: 2,233,372 cells
+Sample cell counts:
 
-- **Features:** 32,285 features (genes) measured across the dataset.
+- 3x: 25,703 cells
+- 5x: 5,230 cells
+- Total: 30,933 cells
+- Features: 32,285 genes measured across the dataset.
 
-- **Metadata (`meta.data`):** Contains 3 columns:
-  - `orig.ident`: Identifies the sample of origin (`3x` or `5x`).
-  - `nCount_RNA`: Total RNA counts per cell.
-  - `nFeature_RNA`: Number of genes detected per cell.
+Metadata (`meta.data`): Contains 3 columns:
 
-- **Active assay:** `RNA` (Assay5 class).
+- `orig.ident`: Identifies the sample of origin (3x or 5x).
+- `nCount_RNA`: Total RNA counts per cell.
+- `nFeature_RNA`: Number of genes detected per cell.
 
-- **Count layers:** `counts.1` and `counts.2` store the raw counts for the two samples separately.
+Active assay: RNA, containing the gene expression count data.
 
-- **Variable features:** 0 identified so far.
+Count layers: `counts.1` and `counts.2` store the raw counts for the two samples separately.
 
-- **Active identity (`active.ident`):** `DigitTips` for all cells.
+Variable features: 0 identified so far. Highly variable genes have not yet been selected.
 
-- **Saved object:** `DigitTips.rds` contains the Seurat object and can be reloaded using `readRDS()`.
+Active identity (`active.ident`): Currently `DigitTips` for all cells, reflecting the project name rather than the sample labels.
 
+Saved object: `DigitTips.rds` contains the Seurat object and can be reloaded using `readRDS("DigitTips.rds")`.

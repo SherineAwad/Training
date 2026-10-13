@@ -305,6 +305,9 @@ install.packages(c(
 ))
 ``` 
 
+## Reference: Seurat v5 Tutorial 
+
+[Getting Started with Seurat v5: Introduction to Single-Cell RNA-seq Analysis](https://satijalab.org/seurat/articles/get_started_v5_new)
 
 ## Training Dataset: scRNA-seq Data from 3x and 5x Amputated Mouse Digit Tips
 
@@ -315,4 +318,89 @@ install.packages(c(
 | SITTF8 | 3x |
 | SITTC1 | 5x |
 
+## Getting started
+
+```r
+library(Seurat)
+library(dplyr)
+
+sittc1 <- Read10X_h5("SITTC1_raw_feature_bc_matrix.h5")
+sittf8 <- Read10X_h5("SITTF8_raw_feature_bc_matrix.h5")
+
+myObject <- CreateSeuratObject(
+  counts = list(`5x` = sittc1, `3x` = sittf8),
+  project = "DigitTips"
+)
+
+myObject$orig.ident <- NA_character_
+
+myObject$orig.ident[Cells(myObject[["RNA"]]$counts.5x)] <- "5x"
+myObject$orig.ident[Cells(myObject[["RNA"]]$counts.3x)] <- "3x"
+
+table(myObject$orig.ident)
+
+glimpse(myObject)
+print(myObject)
+
+saveRDS(myObject, file = "DigitTips.rds")
+```
+
+
+###### You will see something like this: 
+
+```text
+     3x      5x 
+1260648  593996 
+
+Formal class 'Seurat' [package "SeuratObject"] with 13 slots
+  ..@ assays      :List of 1
+  .. ..$ RNA:Formal class 'Assay5' [package "SeuratObject"] with 8 slots
+  ..@ meta.data   :'data.frame': 1854644 obs. of 3 variables:
+  .. ..$ orig.ident  : chr [1:1854644] "5x" "5x" "5x" "3x" ...
+  .. ..$ nCount_RNA  : num [1:1854644] 0 1 1 2 1 1 50 0 2 1 ...
+  .. ..$ nFeature_RNA: num [1:1854644] 0 1 1 2 1 1 43 0 2 1 ...
+  ..@ active.assay: chr "RNA"
+  ..@ active.ident: Factor w/ 1 level "DigitTips": 1 1 1 1 1 1 1 1 1 1 ...
+  .. ..- attr(*, "names")= chr [1:1854644] "AAACCCAAGAAACCAT-1" "AAACCCAAGAAAGCGA-1" "AAACCCAAGAAATTCG-1" "AAACCCAAGAACAGGA-1" ...
+  ..@ graphs      : list()
+  ..@ neighbors   : list()
+  ..@ reductions  : list()
+  ..@ images      : list()
+  ..@ project.name: chr "DigitTips"
+  ..@ misc        : list()
+  ..@ version     :Classes 'package_version', 'numeric_version' hidden list of 1
+  .. ..$ : int [1:3] 5 3 0
+  ..@ commands    : list()
+  ..@ tools       : list()
+
+An object of class Seurat
+32285 features across 1854644 samples within 1 assay
+Active assay: RNA (32285 features, 0 variable features)
+2 layers present: counts.5x, counts.3x
+``` 
+
+
+##### Key points in the output
+
+- **Sample cell counts:**
+  - `3x`: 1,260,648 cells
+  - `5x`: 593,996 cells
+  - Total: 1,854,644 cells
+
+- **Features:** 32,285 genes measured across the dataset.
+
+- **Metadata (`meta.data`):** Contains 3 columns:
+  - `orig.ident`: Identifies the sample of origin (`3x` or `5x`).
+  - `nCount_RNA`: Total RNA counts per cell.
+  - `nFeature_RNA`: Number of genes detected per cell.
+
+- **Active assay:** `RNA`, containing the gene expression count data.
+
+- **Count layers:** `counts.5x` and `counts.3x` store the raw counts for the two samples separately.
+
+- **Variable features:** 0 identified so far. Highly variable genes have not yet been selected.
+
+- **Active identity (`active.ident`):** Currently `DigitTips` for all cells, reflecting the project name rather than the sample labels.
+
+- **Saved object:** `DigitTips.rds` contains the Seurat object and can be reloaded using `readRDS()`.
 

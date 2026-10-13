@@ -325,8 +325,8 @@ library(Seurat)
 library(dplyr)
 
 # 1. Load the matrices
-sittc1 <- Read10X_h5("SITTC1_raw_feature_bc_matrix.h5")
-sittf8 <- Read10X_h5("SITTF8_raw_feature_bc_matrix.h5")
+sittc1 <- Read10X_h5("SITTC1_filtered_feature_bc_matrix.h5")
+sittf8 <- Read10X_h5("SITTF8_filtered_feature_bc_matrix.h5")
 
 # 2. Create individual Seurat objects with sample identifiers
 obj_c1 <- CreateSeuratObject(counts = sittc1, project = "DigitTips", min.cells = 0, min.features = 0)
@@ -404,3 +404,44 @@ Variable features: 0 identified so far. Highly variable genes have not yet been 
 Active identity (`active.ident`): Currently `DigitTips` for all cells, reflecting the project name rather than the sample labels.
 
 Saved object: `DigitTips.rds` contains the Seurat object and can be reloaded using `readRDS("DigitTips.rds")`.
+
+
+##### Now lets see if we need to filter our samples
+
+```r
+myObject <- readRDS("DigitTips.rds")
+myObject <- JoinLayers(myObject)
+
+# Calculate mitochondrial percentage
+myObject[["percent.mt"]] <- PercentageFeatureSet(
+  myObject,
+  pattern = "^mt-",
+  assay = "RNA"
+)
+
+# Generate the PNG and plot
+png("DigitTips_preFilter.png", width = 1200, height = 800, res = 150)
+
+VlnPlot(
+  object = myObject,
+  features = c("nCount_RNA", "nFeature_RNA", "percent.mt"),
+  group.by = "orig.ident",
+  pt.size = 0,
+  ncol = 3
+)
+
+dev.off()
+
+```
+
+## Summary Statistics by Sample
+
+| orig.ident | Total_Droplets | Mean_nCount | Median_nCount | Mean_nFeature | Median_nFeature | Mean_percent.mt |
+|------------|---------------:|------------:|--------------:|--------------:|----------------:|----------------:|
+| 3x         | 25,703         | 3,427.728   | 2,674.0       | 1,544.487     | 1,455.0         | 3.917964        |
+| 5x         | 5,230          | 13,618.667  | 11,956.5      | 2,823.443     | 3,274.5         | 4.666826        | 
+
+
+![](3x_5x/DigitTips_preFilter.png?v=1) 
+
+

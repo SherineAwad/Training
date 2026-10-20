@@ -482,19 +482,19 @@ marker_genes = {
     "Mast cell": ["Kit", "Cpa3", "Tpsab1", "Tpsb2", "Ms4a2", "Hdc", "Hpgds", "Mcpt8", "Cd200r3", "Ccr3"]
 }
 ```
-MESENCHYMAL
-* **Fibroblasts**: Make up the vast majority of the soft tissue and blastema.
-* **Osteoprogenitors / Osteoblasts**: Build and regenerate the terminal phalanx bone.
-* **Osteoclasts**: Surge during the initial post-amputation phase to resorb and degrade the stump bone.
-* **Chondrocytes**: Present in local skeletal/joint structures or involved when cartilage forms.
+- MESENCHYMAL
+* **Fibroblasts**
+* **Osteoprogenitors / Osteoblasts**
+* **Osteoclasts**
+* **Chondrocytes**
 
-IMMUNE
-* **Macrophages**: The primary immune cell type involved in digit tip regeneration. They clear debris, modulate inflammation, and trigger blastema formation.
-* **Neutrophils**: The first responders immediately after amputation that initiate the inflammatory response.
-* **Monocytes**: Blood precursor cells that infiltrate the tissue and differentiate into macrophages and dendritic cells.
-* **Dendritic cells**: Antigen-presenting cells that help coordinate immune responses.
-* **Mast cells**: Present in the local connective tissue and involved in early inflammation.
-* **T-cells & B-cells**: Lymphocytes present in smaller proportions during the tissue repair and remodeling stages.
+- IMMUNE
+* **Macrophages**
+* **Neutrophils**
+* **Monocytes**
+* **Dendritic cells**
+* **Mast cells**
+* **T-cells & B-cells**
 
 ```r
 figure_name <- paste("digittips", "_Markers.pdf", sep="") 

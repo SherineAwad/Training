@@ -485,7 +485,6 @@ marker_genes = {
 #### MESENCHYMAL
 * **Fibroblasts**
 * **Osteoprogenitors / Osteoblasts**
-* **Osteoclasts**
 * **Chondrocytes**
 
 #### IMMUNE

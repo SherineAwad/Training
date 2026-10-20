@@ -505,8 +505,7 @@ dev.off()
 
 ## Meeting Log 
 
-|Day/Time|
-|--------|
-|Tuesday 13th October 2026 |
-|Tuesday 20th October 2026 | 
-
+| Scheduled                  | Summary                                      |
+|----------------------------|----------------------------------------------|
+| Tuesday, 13 October 2026   | What is scRNA-seq? Required tools and preprocessing |
+| Tuesday, 20 October 2026   |                                              |

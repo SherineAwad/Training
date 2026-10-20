@@ -78,7 +78,7 @@ For example:
 |---|---:|---:|---:|
 | Cell 1 | 10 | 0 | 5 |
 | Cell 2 | 0 | 15 | 2 |
-| Cell 3 | 8 | 1 | 0 |
+/rds/project/rds-ivbvKVT8GC0| Cell 3 | 8 | 1 | 0 |
 
 In this example:
 
@@ -444,13 +444,68 @@ dev.off()
 
 ![](3x_5x/DigitTips_preFilter.png?v=1) 
 
+## Analysis 
 
+```r
+myObject <- NormalizeData(myObject)
+myObject <- FindVariableFeatures(myObject)
+myObject <- ScaleData(myObject, features = all.genes)
+myObject <- RunPCA(myObject, reduction.key = "PC_")
+myObject <- FindNeighbors(myObject, dims = 1:8)
+myObject <- FindClusters(myObject, resolution = 2.0)
+myObject <- RunUMAP(myObject, dims = 1:8, reduction.name = "umap")
+```
 
+## Marker genes 
+marker_genes = {
+    "Fibroblast": ["Prrx1", "Pdgfra", "Col1a1", "Dcn", "Pi16", "Cd34"],
+    "Endothelial": ["Esam", "Flt1", "Vwf", "Plvap","Cdh5", "Pecam1", "Kdr", "Emcn", "Erg", "Cd34"],
+    "Macrophage": ["Adgre1", "Csf1r", "Cd68", "Mrc1", "Cd163"],
+    "Keratinocyte": ["Krt14", "Krt5", "Epcam", "Cdh1", "Krt17", "Dsg3"],
+    "Osteoblast": ["Runx2", "Postn", "Mmp13", "Spp1", "Dmp1","Sp7", "Bglap", "Alpl", "Ibsp", "Col1a1"],
+    "Pericyte": ["Cspg4", "Pdgfrb", "Kcnj8", "Abcc9", "Rgs5"],
+    "SMC": ["Myh11", "Tagln", "Acta2", "Cnn1", "Des"],
+    "Chondrocyte": ["Col2a1", "Acan", "Sox9", "Matn1", "Col9a1", "Comp"],
+    "Schwann": ["Mbp", "Plp1", "Sox10", "S100b", "Pmp22"],
+    "T-cell": ["Cd3d", "Cd3e", "Cd4", "Cd8a", "Cd28"],
+    "Osteoclast": ["Ctsk", "Acp5", "Calcr", "Oscar", "Nfatc1", "Dcstamp", "Tnfrsf11a"],
+    "Synoviocyte": ["Prg4", "Ucma", "Gdf5", "Cilp2", "Frzb"],
+    "Neutrophil": ["Ly6g", "S100a8", "S100a9", "Mpo", "Csf3r"],
+    "Lymphatic_Endothelial": ["Prox1", "Lyve1", "Pdpn", "Flt4", "Pecam1"],
+    "B-cell": ["Cd79a", "Cd19", "Ms4a1", "Ighm", "Pax5", "Cd22"],
+    "Rspo3_Col23a1": ["Rspo3", "Col23a1"],
+    "MSC": ["Lepr", "Cxcl12", "Ngfr", "Nes", "Cd44", "Scf"],
+    "Osteosarcoma": ["EGFP"],
+    "Nail_Epithelium": ["Lgr6", "Sp6", "Sp8"],
+    "Sweat_glands": ["Aqp5","Scnn1a","Scnn1b","Scnn1g","Krt19","Krt7","Krt8","Krt18","Krt5","Krt14","Foxa1"],
+    "Mast cell": ["Kit", "Cpa3", "Tpsab1", "Tpsb2", "Ms4a2", "Hdc", "Hpgds", "Mcpt8", "Cd200r3", "Ccr3"]
+}
 
+MESENCHYMAL
+* **Fibroblasts**: Make up the vast majority of the soft tissue and blastema.
+* **Osteoprogenitors / Osteoblasts**: Build and regenerate the terminal phalanx bone.
+* **Osteoclasts**: Surge during the initial post-amputation phase to resorb and degrade the stump bone.
+* **Chondrocytes**: Present in local skeletal/joint structures or involved when cartilage forms.
 
+IMMUNE
+* **Macrophages**: The primary immune cell type involved in digit tip regeneration. They clear debris, modulate inflammation, and trigger blastema formation.
+* **Neutrophils**: The first responders immediately after amputation that initiate the inflammatory response.
+* **Monocytes**: Blood precursor cells that infiltrate the tissue and differentiate into macrophages and dendritic cells.
+* **Dendritic cells**: Antigen-presenting cells that help coordinate immune responses.
+* **Mast cells**: Present in the local connective tissue and involved in early inflammation.
+* **T-cells & B-cells**: Lymphocytes present in smaller proportions during the tissue repair and remodeling stages.
+
+```r
+figure_name <- paste("digittips", "_Markers.pdf", sep="") 
+pdf(file =figure_name, width =12)
+FeaturePlot(myObject, features = c("VWF", "ACKR1","IFI27","Tie1", "Kcnj8", "Pecam1"), order=TRUE, reduction = "umap", cols = c("lightgrey", "red"), pt.size = 0.01)
+dev.off()
+```
 
 ## Meeting Log 
 
 |Day/Time|
 |--------|
 |Tuesday 13th October 2026 |
+|Tuesday 20th October 2026 | 
+

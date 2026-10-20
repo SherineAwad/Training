@@ -457,6 +457,7 @@ myObject <- RunUMAP(myObject, dims = 1:8, reduction.name = "umap")
 ```
 
 ## Marker genes 
+```
 marker_genes = {
     "Fibroblast": ["Prrx1", "Pdgfra", "Col1a1", "Dcn", "Pi16", "Cd34"],
     "Endothelial": ["Esam", "Flt1", "Vwf", "Plvap","Cdh5", "Pecam1", "Kdr", "Emcn", "Erg", "Cd34"],
@@ -480,7 +481,7 @@ marker_genes = {
     "Sweat_glands": ["Aqp5","Scnn1a","Scnn1b","Scnn1g","Krt19","Krt7","Krt8","Krt18","Krt5","Krt14","Foxa1"],
     "Mast cell": ["Kit", "Cpa3", "Tpsab1", "Tpsb2", "Ms4a2", "Hdc", "Hpgds", "Mcpt8", "Cd200r3", "Ccr3"]
 }
-
+```
 MESENCHYMAL
 * **Fibroblasts**: Make up the vast majority of the soft tissue and blastema.
 * **Osteoprogenitors / Osteoblasts**: Build and regenerate the terminal phalanx bone.

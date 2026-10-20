@@ -482,13 +482,13 @@ marker_genes = {
     "Mast cell": ["Kit", "Cpa3", "Tpsab1", "Tpsb2", "Ms4a2", "Hdc", "Hpgds", "Mcpt8", "Cd200r3", "Ccr3"]
 }
 ```
-- MESENCHYMAL
+#### MESENCHYMAL
 * **Fibroblasts**
 * **Osteoprogenitors / Osteoblasts**
 * **Osteoclasts**
 * **Chondrocytes**
 
-- IMMUNE
+#### IMMUNE
 * **Macrophages**
 * **Neutrophils**
 * **Monocytes**

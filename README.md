@@ -456,6 +456,25 @@ myObject <- FindClusters(myObject, resolution = 2.0)
 myObject <- RunUMAP(myObject, dims = 1:8, reduction.name = "umap")
 ```
 
+##### For investigating 
+```r 
+pdf(file =figure_name, width =12)
+DimPlot(myObject, reduction = "umap", group.by = "orig.ident",  repel = TRUE) + ggtitle("UMAP")
+DimPlot(myObject, reduction = "umap", group.by = "sample",  repel = TRUE) + ggtitle("UMAP")
+DimPlot(myObject, reduction = "umap", label=TRUE, repel = TRUE) + ggtitle("UMAP")
+dev.off()
+```
+
+##### Check QC per cluster 
+```r 
+VlnPlot(
+  myObject,
+  features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),
+  group.by = "seurat_clusters",
+  pt.size = 0,
+  ncol = 3
+)
+```
 ## Marker genes 
 ```
 marker_genes = {

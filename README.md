@@ -521,9 +521,29 @@ FeaturePlot(myObject, features = c("VWF", "ACKR1","IFI27","Tie1", "Kcnj8", "Peca
 dev.off()
 ```
 
-## Meeting Log 
 
-| Scheduled                  | Summary                                      |
-|----------------------------|----------------------------------------------|
-| Tuesday, 13 October 2026   | What is scRNA-seq? Required tools and preprocessing |
-| Tuesday, 20 October 2026   |                                              |
+#### How to annotate 
+
+```r
+
+myObject <- RenameIdents(
+  myObject,
+  "0" = "Rod",
+  "1" = "Rod",
+  "32" = "Cones",
+  "8" = "MG",
+  "11" = "AC",
+  "35" = "RPE",
+  "19" = "BC",
+  "30" = "HC",
+  "28" = "Vasculature cells"
+)
+
+```
+
+> **Note:** The code snippets provided are intended as examples and guidance, not as code to be copied verbatim. Adapt them to your own Seurat object and metadata, checking which columns are available and ensuring you understand the purpose of each line. The goal is to develop your ability to interpret, adapt, and apply the code independently, rather than rely on complete, ready-to-run scripts.
+
+
+
+
+

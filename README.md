@@ -540,7 +540,36 @@ myObject <- RenameIdents(
 )
 
 ```
+## Differential Gene Expression (DGE)
 
+Differential gene expression (DGE) analysis identifies genes whose expression levels differ between two groups of cells or samples.
+
+- **Log2 fold change (log2FC):** Indicates the direction and magnitude of the expression difference. Positive values indicate higher expression in 3x, while negative values indicate higher expression in 5x.
+- **P-value:** Indicates the statistical evidence for a difference in gene expression.
+- **Adjusted p-value (`p_val_adj`):** Accounts for multiple testing across genes and helps identify statistically significant differences.
+
+DGE results can help identify genes associated with differences between experimental conditions and provide candidates for further biological investigation.
+
+
+```r 
+library(Seurat)
+
+# Load Seurat object
+digittips <- readRDS("digittips.rds")
+
+# Set sample identities
+Idents(digittips) <- "orig.ident"
+
+# DGE: 3x vs 5x
+dge <- FindMarkers(
+  digittips,
+  ident.1 = "SITTF8",
+  ident.2 = "SITTC1"
+)
+
+# Save results
+write.csv(dge, "DGE_3x_vs_5x.csv")
+```
 > **Note:** The code snippets provided are intended as examples and guidance, not as code to be copied verbatim. Adapt them to your own Seurat object and metadata, checking which columns are available and ensuring you understand the purpose of each line. The goal is to develop your ability to interpret, adapt, and apply the code independently, rather than rely on complete, ready-to-run scripts.
 
 

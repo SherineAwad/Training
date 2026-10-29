@@ -551,6 +551,25 @@ Differential gene expression (DGE) analysis identifies genes whose expression le
 DGE results can help identify genes associated with differences between experimental conditions and provide candidates for further biological investigation.
 
 
+### What is Fold Change?
+
+Fold change describes how much gene expression differs between two groups.
+
+- **Fold change = 1:** No difference in expression.
+- **Fold change = 2:** Expression is twice as high in one group compared with the other.
+- **Fold change = 0.5:** Expression is half as high in one group compared with the other.
+
+In DGE analysis, fold change is often expressed as **log2 fold change (log2FC)**:
+
+- **log2FC = +1:** Expression is 2 times higher in the first group than in the second group.
+- **log2FC = −1:** Expression is 2 times lower in the first group than in the second group.
+- **log2FC = 0:** No difference in expression between the groups.
+
+The sign of log2FC indicates the direction of the difference, depending on which group is defined as the reference. The absolute value indicates the magnitude of the difference.
+
+Fold change describes the magnitude and direction of an expression difference, whereas the p-value measures the statistical evidence for that difference.
+
+
 ```r 
 library(Seurat)
 

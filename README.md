@@ -579,8 +579,118 @@ dge <- FindMarkers(
 # Save results
 write.csv(dge, "DGE_3x_vs_5x.csv")
 ```
-> **Note:** The code snippets provided are intended as examples and guidance, not as code to be copied verbatim. Adapt them to your own Seurat object and metadata, checking which columns are available and ensuring you understand the purpose of each line. The goal is to develop your ability to interpret, adapt, and apply the code independently, rather than rely on complete, ready-to-run scripts.
+```r 
+install.packages("devtools")
+devtools::install_github("immunogenomics/presto")
+``` 
+### Pathway analysis 
 
+A pathway is simply a group of genes that biologists have annotated as being associated with the same biological process, such as a metabolic route or a signalling process. It is a curated label from a database, not something your data discovers. When GSEA says a pathway is enriched, it means that the genes in that group are concentrated towards one end of your ranked gene list more than expected by chance. If they cluster towards the top, where genes upregulated in your target group tend to sit, the pathway is positively enriched; if they cluster towards the bottom, where downregulated genes tend to sit, it is negatively enriched. This tells you that the pathway's genes show a coordinated pattern in your comparison, not that the pathway is necessarily active or causal.
+
+We will use clusterProfiler for pathway analysis, this can be installed as below: 
+```r 
+
+BiocManager::install("clusterProfiler")
+BiocManager::install("org.Mm.eg.db")
+
+```
+
+and for the pathway analysis:
+
+```r
+
+## ---------- 1. Read DGE file ----------
+dge <- read.csv("DGE_5x_vs_3x.csv", stringsAsFactors = FALSE)
+
+stopifnot(all(c("Gene", "avg_log2FC") %in% colnames(dge)))
+
+dge <- dge %>% filter(!is.na(avg_log2FC), Gene != "")
+
+## ---------- 2. Collapse duplicate gene symbols ----------
+dge <- dge %>%
+  group_by(Gene) %>%
+  slice_max(order_by = abs(avg_log2FC), n = 1, with_ties = FALSE) %>%
+  ungroup()
+
+## ---------- 3. Build ranked named vector ----------
+gene_list <- dge$avg_log2FC
+names(gene_list) <- dge$Gene
+gene_list <- sort(gene_list, decreasing = TRUE)
+
+cat("Ranked genes (symbols):", length(gene_list), "\n")
+
+## ---------- 4. Convert SYMBOL -> ENTREZID (mouse) ----------
+gene_df <- bitr(names(gene_list),
+                fromType = "SYMBOL",
+                toType   = "ENTREZID",
+                OrgDb    = org.Mm.eg.db)
+
+gene_list_entrez <- gene_list[names(gene_list) %in% gene_df$SYMBOL]
+names(gene_list_entrez) <- gene_df$ENTREZID[match(names(gene_list_entrez), gene_df$SYMBOL)]
+gene_list_entrez <- sort(gene_list_entrez, decreasing = TRUE)
+
+cat("Ranked genes (Entrez):", length(gene_list_entrez), "\n")
+
+## ---------- 5. GSEA - GO Biological Process ----------
+set.seed(123)
+gsea_go <- gseGO(
+  geneList      = gene_list_entrez,
+  OrgDb         = org.Mm.eg.db,
+  keyType       = "ENTREZID",
+  ont           = "ALL",
+  minGSSize     = 10,
+  maxGSSize     = 500,
+  pvalueCutoff  = 0.05,
+  pAdjustMethod = "BH",
+  verbose       = FALSE
+)
+gsea_go_df <- as.data.frame(gsea_go)
+write.csv(gsea_go_df, "GSEA_GO_ALL.csv", row.names = FALSE)
+cat("GO BP enriched terms:", nrow(gsea_go_df), "\n")
+
+## ---------- 6. GSEA - KEGG (mouse = mmu) ----------
+set.seed(123)
+gsea_kegg <- gseKEGG(
+  geneList      = gene_list_entrez,
+  organism      = "mmu",
+  minGSSize     = 10,
+  maxGSSize     = 500,
+  pvalueCutoff  = 0.05,
+  pAdjustMethod = "BH",
+  verbose       = FALSE,
+  nPermSimple   = 10000
+)
+gsea_kegg_df <- as.data.frame(gsea_kegg)
+write.csv(gsea_kegg_df, "GSEA_KEGG.csv", row.names = FALSE)
+cat("KEGG pathways enriched:", nrow(gsea_kegg_df), "\n")
+
+## ---------- 7. Plots ----------
+if (nrow(gsea_go_df) > 0) {
+  p_go <- dotplot(gsea_go, showCategory = 15, split = ".sign") +
+    ggtitle("GSEA - GO Biological Process (Mouse)")
+  ggsave("GSEA_GO_ALL_dotplot.png", p_go, width = 9, height = 7, dpi = 300)
+
+  p_go_ridge <- ridgeplot(gsea_go, showCategory = 10) +
+    ggtitle("GO ALL - Ridge Plot")
+  ggsave("GSEA_GO_ALL_ridge.png", p_go_ridge, width = 9, height = 7, dpi = 300)
+}
+
+if (nrow(gsea_kegg_df) > 0) {
+  p_kegg <- dotplot(gsea_kegg, showCategory = 15, split = ".sign") +
+    ggtitle("GSEA - KEGG Pathways (Mouse)")
+  ggsave("GSEA_KEGG_dotplot.png", p_kegg, width = 9, height = 7, dpi = 300)
+}
+
+cat("Done. Files written:\n",
+    "  GSEA_GO_ALL.csv\n",
+    "  GSEA_KEGG.csv\n",
+    "  GSEA_GO_ALL_dotplot.png\n",
+    "  GSEA_GO_ALL_ridge.png\n",
+    "  GSEA_KEGG_dotplot.png\n")
+
+``` 
+
+> **Note:** The code snippets provided are intended as examples and guidance, not as code to be copied verbatim. Adapt them to your own Seurat object and metadata, checking which columns are available and ensuring you understand the purpose of each line. The goal is to develop your ability to interpret, adapt, and apply the code independently, rather than rely on complete, ready-to-run scripts.
 
 
 

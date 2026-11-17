@@ -694,7 +694,7 @@ cat("Done. Files written:\n",
 
 
 
-### DGE Per cluster 
+### Celltypes DGE  
 ```r
 Idents(myObject) <- "celltype"
 

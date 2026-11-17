@@ -694,4 +694,15 @@ cat("Done. Files written:\n",
 
 
 
+### DGE Per cluster 
+```r
+Idents(myObject) <- "celltype"
+
+dge <- FindMarkers(
+  myObject,
+  ident.1 = "Mesenchymal"
+)
+
+```
+
 

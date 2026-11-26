@@ -700,7 +700,7 @@ Idents(myObject) <- "celltype"
 
 dge <- FindMarkers(
   myObject,
-  ident.1 = "Mesenchymal"
+  ident.1 = "Mesenchymal", min.pct=0.1
 )
 
 ```

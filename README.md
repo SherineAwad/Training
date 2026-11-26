@@ -705,4 +705,31 @@ dge <- FindMarkers(
 
 ```
 
+### Cell ratio
+```r
+library(Seurat)
+library(ggplot2)
+library(dplyr)
 
+# Calculate cell counts
+cell_counts <- seurat_obj@meta.data %>%
+  count(sample, celltype)
+
+# Calculate percentages within each sample
+cell_ratios <- cell_counts %>%
+  group_by(sample) %>%
+  mutate(percentage = n / sum(n) * 100)
+
+# Plot
+ggplot(cell_ratios, aes(x = sample, y = percentage, fill = celltype)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(
+    x = "Sample",
+    y = "Cell proportion (%)",
+    fill = "Cell type"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
